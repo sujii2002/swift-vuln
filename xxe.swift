@@ -1,28 +1,38 @@
-import UIKit
+import AppKit   // AppKit for macOS applications
 import Foundation
 
-// x3 TP
+// Vulnerable XXE Example
+class XXEViewController: NSViewController {  // Use NSViewController for macOS
 
-// vuln XXE 
-class XXEViewController: ViewController {
-
+    var parser: XMLParser!  // Declare the parser here, if you intend to use it
+    
     func foo1() {
         var success: Bool
-        var rawXmlConvToData: NSData = rawXml.data(using: NSUTF8StringEncoding)
-        var myParser: XMLParser = NSXMLParser(data: rawXmlConvToData)
-        // vuln xxe
+        // Ensure rawXml is defined or passed
+        let rawXml = "<your-raw-xml-here>" // Replace with actual XML data or provide as input
+        guard let rawXmlConvToData = rawXml.data(using: .utf8) else {
+            print("Failed to convert rawXml to data")
+            return
+        }
+        
+        let myParser = XMLParser(data: rawXmlConvToData)
+        // Vulnerability: Enabling external entity resolution
         myParser.shouldResolveExternalEntities = true
         myParser.delegate = self
         myParser.parse()
     }
     
-
     func foo2(xml: String) {
-        parser = NSXMLParser(data: rawXml.dataUsingEncoding(NSUTF8StringEncoding)!)
+        guard let rawXmlConvToData = xml.data(using: .utf8) else {
+            print("Failed to convert xml to data")
+            return
+        }
+        
+        parser = XMLParser(data: rawXmlConvToData)
         parser.delegate = self
-        // vuln xxe
+        // Vulnerability: Enabling external entity resolution
         parser.shouldResolveExternalEntities = true
         parser.parse()
     }
-    
 }
+
