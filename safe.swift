@@ -1,4 +1,4 @@
-import example
+
 import UIKit
 import SafariServices
 import WebKit
