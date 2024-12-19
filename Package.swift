@@ -13,7 +13,7 @@ let package = Package(
                 "safe.swift",
                 "sqlinjection.swift",
                 "webview.swift",
-                "xxe.swift"
+                "main.swift"
             ]
         )
     ]
